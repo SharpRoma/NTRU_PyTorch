@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.idea/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+key.pub
+key.priv
+results/
+ntru_performance_scaling_rus.png
