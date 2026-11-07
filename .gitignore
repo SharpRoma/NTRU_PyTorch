@@ -10,3 +10,9 @@ key.pub
 key.priv
 results/
 ntru_performance_scaling_rus.png
+
+hailort.log
+*.hef
+
+# Local Ubuntu transfer bundle: private keys, articles, compiler and experiments.
+/ubuntu-transfer/

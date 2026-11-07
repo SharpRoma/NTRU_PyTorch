@@ -7,14 +7,50 @@ from . import PRESETS, RandomSource, SympyNTRU, TorchNTRU, generate_keys
 
 def main():
     parser = argparse.ArgumentParser(description="NTRU research tools")
-    parser.add_argument("command", choices=["demo", "trace", "benchmark"])
+    parser.add_argument(
+        "command",
+        choices=[
+            "demo",
+            "trace",
+            "benchmark",
+            "hailo-prepare",
+            "hailo-check",
+            "hailo-demo",
+            "hailo-benchmark",
+            "hailo-build",
+            "hailo-admit",
+        ],
+    )
     parser.add_argument("--preset", choices=PRESETS, default="moderate")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--runs", type=int, default=20)
     parser.add_argument("--warmup", type=int, default=3)
-    parser.add_argument("--output", default="results/benchmark")
+    parser.add_argument("--output")
+    parser.add_argument("--artifact", default="results/hailo")
+    parser.add_argument("--public-key")
+    parser.add_argument("--private-key")
+    parser.add_argument("--cases", type=int, default=1000)
+    parser.add_argument("--hardware", action="store_true")
+    parser.add_argument("--report")
+    parser.add_argument("--build-dir", default="results/hailo-build")
+    parser.add_argument("--admit-output", default="results/hailo-admitted")
+    parser.add_argument("--distro", default="Ubuntu-22.04")
+    parser.add_argument("--linux-python", default="/opt/ntru-dfc/bin/python")
+    parser.add_argument(
+        "--quant-profile", choices=["unit-v1", "binary-circulant-affine-v1"], default="unit-v1"
+    )
+    parser.add_argument("--calibration-samples", type=int, default=1024)
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)
+    if args.output is None:
+        args.output = (
+            "results/hailo-benchmark" if args.command == "hailo-benchmark" else "results/benchmark"
+        )
+    if args.command.startswith("hailo-"):
+        from .hailo.cli import run
+
+        run(args)
+        return
     if args.command == "benchmark":
         from .research import benchmark
 

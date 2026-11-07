@@ -66,3 +66,10 @@ Legacy public files do not contain df/dg; the reader uses placeholders df=1, dg=
 Tests include a fixed artificial-key vector captured from the original Git HEAD, independent small convolution references, randomized differential arithmetic, all four backend combinations, UTF-8 and binary payloads, legacy readers, malformed inputs and all five large preset key-generation runs. Large tests are marked `slow` and may take minutes. Synthetic identity-key fixtures are strictly for regression testing.
 
 Benchmarks validate equality before timing, use the same operands and report raw nanoseconds, median, quartiles, parameters, seed, warmup, versions, platform and Torch thread count in JSON/CSV. Polynomial measurements compare cyclic multiplication over integers without coefficient reduction. Backend-native inputs are prepared outside the polynomial timer; both results are converted to Python integer tuples inside it. Memory measurements include message coding and seeded sampling but exclude key generation and file IO; JSON read/write are timed separately. This compares PyTorch against the SymPy symbolic implementation, not optimized native NTRU. Historical article measurements are not reproduced or replaced.
+
+
+## Experimental Hailo preparation
+
+The optional `ntru_pytorch.hailo` module exports a fixed-public-key binary Conv2d graph and checks its exact host/ONNX arithmetic. It includes a fail-closed HailoRT 4.23 adapter, artifact checksums, numerical-evidence requirements and hardware benchmark commands. There is no compiled NTRU HEF yet; CPU simulation is explicitly named `SoftwareHailoEncryptor` and is never reported as hardware execution.
+
+Install `.[hailo-export]` for ONNX tools and see [the Hailo research guide](docs/hailo-research.md) for preparation, artifact admission, commands, measured boundaries and the next compiler stage. No firmware update, DFC installation or change to the current device runtime is part of this module.
