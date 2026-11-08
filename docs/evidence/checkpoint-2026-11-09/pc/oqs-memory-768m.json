@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "hardware_tested": true,
+  "hardware_qualification": false,
+  "architecture": "x86_64",
+  "phases": [
+    {
+      "stage": "python",
+      "peak_rss_bytes": 13082624,
+      "cgroup": {
+        "memory.max": "805306368",
+        "memory.swap.max": "0",
+        "memory.peak": "6541312",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+      }
+    },
+    {
+      "stage": "artifact_verified",
+      "peak_rss_bytes": 58449920,
+      "cgroup": {
+        "memory.max": "805306368",
+        "memory.swap.max": "0",
+        "memory.peak": "43474944",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+      }
+    },
+    {
+      "stage": "oqs_128_blocks",
+      "peak_rss_bytes": 58449920,
+      "cgroup": {
+        "memory.max": "805306368",
+        "memory.swap.max": "0",
+        "memory.peak": "43474944",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+      }
+    },
+    {
+      "stage": "hardware_128_blocks",
+      "peak_rss_bytes": 104525824,
+      "cgroup": {
+        "memory.max": "805306368",
+        "memory.swap.max": "0",
+        "memory.peak": "80986112",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+      }
+    }
+  ],
+  "imported_backends": {
+    "torch": false,
+    "sympy": false,
+    "hailo_platform": true
+  },
+  "device": {
+    "architecture": "HAILO8L",
+    "firmware_version": "4.23.0",
+    "board_name": "Hailo-8",
+    "device_id": "0000:25:00.0",
+    "runtime_version": "4.23.0"
+  },
+  "frames": 1024,
+  "blocks": 128
+}

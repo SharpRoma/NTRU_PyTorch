@@ -1,6 +1,7 @@
-"""Windows/WSL orchestration and explicit admission of compiler evidence."""
+"""Native Linux / Windows-WSL builds and explicit admission of compiler evidence."""
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -78,6 +79,7 @@ def build_hailo(
             "cout": scheme.cout,
             "seed": seed,
             "source": report,
+            "calibration_frames": len(frames),
         }
         config["calibration_sha256"] = sha256(root / "calibration.npy")
         config["expected_sha256"] = sha256(root / "expected.npy")
@@ -99,12 +101,13 @@ def build_hailo(
         (root / "command.json").write_text(json.dumps(command, indent=2), encoding="utf-8")
         with (root / "build.log").open("wb") as log:
             result = subprocess.run(
-                command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, check=False
+                command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+                check=False, cwd=root, env={**os.environ, "CUDA_VISIBLE_DEVICES": "-1"},
             )
         if (root / "build-report.json").exists():
             return json.loads((root / "build-report.json").read_text(encoding="utf-8"))
         raise ArtifactError(
-            f"WSL/DFC worker did not produce a report (exit {result.returncode}); see build.log. WSL may require a reboot or provisioning"
+            f"DFC worker did not produce a report (exit {result.returncode}); see build.log"
         )
     except Exception as exc:
         report.update(status="blocked", error=f"{type(exc).__name__}: {exc}")
@@ -146,5 +149,11 @@ def admit_build(artifact_dir, build_dir, output_dir):
         manifest["status"] = "numerically-admitted-not-hardware-tested"
         (staging / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
         load_artifact(staging, compiled=True)
+        # Inspect the actual HEF metadata without opening a physical device.
+        import hailo_platform as hp
+
+        from .runtime import validate_hef_ports
+
+        validate_hef_ports(hp.HEF(str(staging / "model.hef")), manifest["compiled"], hp)
         shutil.copytree(staging, target)
     return manifest

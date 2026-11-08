@@ -1,0 +1,44 @@
+{
+  "hardware_tested": true,
+  "passed": true,
+  "stage": "complete",
+  "seed": 42,
+  "device": {
+    "architecture": "HAILO8L",
+    "firmware_version": "4.23.0",
+    "board_name": "Hailo-8",
+    "device_id": "0000:25:00.0",
+    "runtime_version": "4.23.0"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+    "packages": {
+      "numpy": "1.26.4",
+      "torch": "2.15.0",
+      "sympy": "1.14.0",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "hailort": "4.23.0",
+      "netifaces": "0.11.0"
+    }
+  },
+  "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+  "oqs_manifest_sha256": {
+    "/home/sharproma/PycharmProjects/NTRU_PyTorch/results/native/oqs/0.16.0/x86_64/portable": "3f9480a511b53d53c461327130559605f0bd7b5494f6820cf8b163561fff93e5",
+    "/home/sharproma/PycharmProjects/NTRU_PyTorch/results/native/oqs/0.16.0/x86_64/native": "89f030deacae20e92e7b0fecb16042e51977e30c5c6dbe85023cba7cc5a33017"
+  },
+  "partial_sums": {
+    "stage": "hardware",
+    "cases": 2500,
+    "random_cases": 1000,
+    "seed": 42,
+    "exact": true,
+    "packing": "active16-v1",
+    "host_processing": "optimized"
+  },
+  "messages": 3,
+  "cross_decryption": true,
+  "session_opens": 3,
+  "cleanup_after_exception": true
+}

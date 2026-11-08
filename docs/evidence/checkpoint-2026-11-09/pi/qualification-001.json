@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "hardware_tested": true,
+  "hardware_qualification": true,
+  "qualification_scope": "NPU partial sums, independent INT64 convolution, SparseNTRU ciphertexts/decryption, session recovery",
+  "torch_sympy_checked_on_pi": false,
+  "performance_benchmark": false,
+  "platform": "Linux-6.12.109+rpt-rpi-2712-aarch64-with-glibc2.36",
+  "python": "3.11.2",
+  "seed": 42,
+  "page_size": 16384,
+  "stage": "complete",
+  "force_desc_page_size": 4096,
+  "elapsed_ns": 118858596162,
+  "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+  "key_sha256": "54e0c7e244eb1c93c4761b4b99a98e0e8123a13f17663754931650ca08042f03",
+  "private_key_sha256": "cf9006df32d5d76b0b4416a792266998f5b3ac8f91af22053c713e90e8a93920",
+  "script_sha256": "a86ca60fb3fc9a97c1841479af45d39b33b03de119c7944dff6f893a0c93b146",
+  "numpy": "1.26.4",
+  "packing": "active16-v1",
+  "host_processing": "optimized",
+  "device": {
+    "architecture": "HAILO8L",
+    "firmware_version": "4.23.0",
+    "board_name": "Hailo-8",
+    "device_id": "0001:01:00.0",
+    "runtime_version": "4.23.0"
+  },
+  "arithmetic": {
+    "stage": "hardware",
+    "cases": 2500,
+    "random_cases": 1000,
+    "seed": 42,
+    "exact": true,
+    "packing": "active16-v1",
+    "host_processing": "optimized"
+  },
+  "messages": [
+    "empty",
+    "unicode",
+    "binary_nuls",
+    "multiblock"
+  ],
+  "cpu_kernels": [
+    "shift-sum",
+    "cached-shifts"
+  ],
+  "session_opens": 3,
+  "cleanup_after_exception": true,
+  "peak_rss_bytes": 85540864,
+  "imported_backends": {
+    "torch": false,
+    "sympy": false,
+    "hailo_platform": true
+  }
+}

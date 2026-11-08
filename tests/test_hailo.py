@@ -254,7 +254,10 @@ def test_numeric_evidence_rejection(compiled_fixture):
         load_artifact(root, compiled=True)
 
 
-def test_runtime_context_and_stream_validation(compiled_fixture, monkeypatch):
+@pytest.mark.parametrize("affine_cache", [None, False, True])
+@pytest.mark.parametrize("host_processing", ["reference", "optimized"])
+def test_runtime_context_and_stream_validation(compiled_fixture, monkeypatch, affine_cache,
+                                               host_processing):
     from contextlib import contextmanager
     from types import SimpleNamespace
 
@@ -286,7 +289,16 @@ def test_runtime_context_and_stream_validation(compiled_fixture, monkeypatch):
         get_input_vstream_infos=lambda: [ports[0]], get_output_vstream_infos=lambda: [ports[1]]
     )
     network = SimpleNamespace(activate=lambda: context("activation", None))
-    device = SimpleNamespace(configure=lambda *args: [network])
+    board = SimpleNamespace(
+        firmware_version=SimpleNamespace(major=4, minor=23, revision=0),
+        device_architecture="HAILO8L", board_name="TEST-ONLY",
+    )
+    physical = SimpleNamespace(
+        control=SimpleNamespace(identify=lambda: board), device_id="TEST-ONLY", release=lambda: None
+    )
+    device = SimpleNamespace(
+        configure=lambda *args: [network], get_physical_devices=lambda: [physical]
+    )
     pipeline = SimpleNamespace(infer=lambda data: {"partial": scheme.software(data["r"])})
     hp = SimpleNamespace(
         HEF=lambda path: hef,
@@ -302,9 +314,28 @@ def test_runtime_context_and_stream_validation(compiled_fixture, monkeypatch):
     monkeypatch.setitem(sys.modules, "hailo_platform", hp)
     monkeypatch.setattr(runtime, "version", lambda name: "4.23.0")
     session = runtime.HailoSession(root, m, scheme)
+    session.host_processing = host_processing
+    lookup_calls = []
+    if affine_cache is not None:
+        from ntru_pytorch.hailo import proof
+
+        m["compiled"]["arithmetic_profile"] = "binary-circulant-affine-v1"
+        spec = {"input": {"zero_code": 0, "one_code": 1},
+                "output": {"scale": "1", "zero_point": "0"}}
+        (root / "compiler-report.json").write_text(json.dumps({"affine": spec}))
+        original_lookup = proof.affine_lookup
+
+        def counted_lookup(spec):
+            lookup_calls.append(1)
+            return original_lookup(spec)
+
+        monkeypatch.setattr(proof, "affine_lookup", counted_lookup)
+        session.cache_affine_lut = affine_cache
     frames = scheme.pack([[1]])
     with session as active:
         assert np.array_equal(active.infer(frames), scheme.software(frames))
+        assert np.array_equal(active.infer(frames), scheme.software(frames))
+    assert len(lookup_calls) == (0 if affine_cache is None else 1 if affine_cache else 2)
     assert events == [
         "open-device",
         "open-pipeline",
@@ -319,6 +350,12 @@ def test_runtime_context_and_stream_validation(compiled_fixture, monkeypatch):
     with pytest.raises(ArtifactError, match="quantization"):
         with runtime.HailoSession(root, m, scheme):
             pass
+    ports[0].quant_info.qp_scale = 1
+    board.firmware_version.minor = 24
+    with pytest.raises(ArtifactError, match="firmware"):
+        with runtime.HailoSession(root, m, scheme):
+            pass
+    assert events[-1] == "close-device"
 
 
 def test_hardware_engine_contract(compiled_fixture, monkeypatch, pair):
@@ -353,6 +390,42 @@ def test_hardware_engine_contract(compiled_fixture, monkeypatch, pair):
     assert events == ["open", "close"]
 
 
+@pytest.mark.parametrize("host_processing", ["reference", "optimized"])
+def test_qualification_workflow_with_explicit_fake_device(compiled_fixture, monkeypatch, pair,
+                                                         host_processing):
+    from ntru_pytorch.hailo import engine
+    from ntru_pytorch.hailo.validation import qualify_hardware
+
+    root, _, scheme = compiled_fixture
+    events = []
+
+    class FakeSession:
+        identity = {"device_id": "TEST-ONLY-NOT-HARDWARE"}
+
+        def __init__(self, *args):
+            pass
+
+        def __enter__(self):
+            events.append("open")
+            return self
+
+        def __exit__(self, *exc):
+            events.append("error-close" if exc[0] else "close")
+
+        def infer(self, frames):
+            return scheme.software(frames)
+
+    monkeypatch.setattr(engine, "HailoSession", FakeSession)
+    report = qualify_hardware(root, pair[1], cases=1000, host_processing=host_processing)
+    assert report["partial_sums"]["random_cases"] == 1000
+    assert report["session_opens"] == 3
+    assert "unicode" in report["messages"]
+    assert report["device"]["device_id"] == "TEST-ONLY-NOT-HARDWARE"
+    assert events == ["open", "close", "open", "error-close", "open", "close"]
+    with pytest.raises(ValueError, match="1000"):
+        qualify_hardware(root, pair[1], cases=1)
+
+
 @pytest.mark.slow
 @pytest.mark.parametrize("name", list(PRESETS))
 def test_onnx_presets(name, tmp_path):
@@ -377,8 +450,9 @@ def test_benchmark_reporting_with_explicit_fake_device(tmp_path, monkeypatch):
     (tmp_path / "compiler-report.json").write_text(json.dumps({"compiler_version": "TEST-ONLY"}))
 
     class FakeDevice(SoftwareHailoEncryptor):
-        def __init__(self, directory):
-            super().__init__(key)
+        def __init__(self, directory, **kwargs):
+            super().__init__(key, packing=kwargs.get("packing", "position16-v1"),
+                             host_processing=kwargs.get("host_processing", "reference"))
             self.load_ns = 1
             self.manifest = {
                 "key_sha256": key_hash(key),
@@ -396,6 +470,66 @@ def test_benchmark_reporting_with_explicit_fake_device(tmp_path, monkeypatch):
     assert all(s["input_bytes"] > 0 and s["output_bytes"] > 0 for s in hailo)
     assert report["metadata"]["hardware_internal_ns"] is None
     assert (tmp_path / "benchmark.csv").read_text().count("TEST-ONLY") > 0
+    bench.benchmark_hailo(tmp_path, private, tmp_path / "variants", runs=2, warmup=0,
+                          compare_variants=True)
+    comparison = json.loads((tmp_path / "variants.json").read_text())
+    assert len(comparison["summary"]) == 24
+    assert len(comparison["samples"]) == 48
+    assert len(comparison["metadata"]["variant_order"]) == 4
+    for count in (1, 8, 32, 128):
+        samples = [s for s in comparison["samples"] if s["blocks"] == count
+                   and s.get("packing") == "active16-v1"]
+        assert all(s["frames"] == count * 2 for s in samples)
+    with pytest.raises(ValueError, match="already exists"):
+        bench.benchmark_hailo(tmp_path, private, tmp_path / "variants", runs=2)
+
+    original_threads = bench.torch.get_num_threads()
+    sympy_calls = {"encrypt": 0, "decrypt": 0}
+    for operation in tuple(sympy_calls):
+        method = getattr(bench.SympyNTRU, operation + "_bytes")
+
+        def counted(self, *args, _method=method, _operation=operation, **kwargs):
+            sympy_calls[_operation] += 1
+            return _method(self, *args, **kwargs)
+
+        monkeypatch.setattr(bench.SympyNTRU, operation + "_bytes", counted)
+    bench.benchmark_hailo(tmp_path, private, tmp_path / "skip", runs=2, warmup=0,
+                          packing="active16-v1", include_sympy_timing=False, torch_threads=1,
+                          host_processing="optimized")
+    skipped = json.loads((tmp_path / "skip.json").read_text())
+    assert len(skipped["samples"]) == 16
+    assert {s["backend"] for s in skipped["samples"]} == {"torch", "hailo"}
+    assert sympy_calls == {"encrypt": 4, "decrypt": 4}
+    assert skipped["metadata"]["torch_threads"] == 1
+    assert bench.torch.get_num_threads() == original_threads
+    meta = skipped["metadata"]
+    assert meta["host_processing"] == "optimized"
+    assert meta["cold_start_ns"] == meta["artifact_validation_ns"] + meta["session_open_ns"]
+    assert meta["artifact_validation_ns"] > 0 and meta["session_open_ns"] > 0
+    for row in skipped["summary"]:
+        assert row["payload_bytes"] == row["blocks"] * n // 8 - 8
+        assert row["bytes_per_second"] == row["payload_bytes"] * 1e9 / row["median_ns"]
+        assert meta["batch_checks"][f"hailo:{row['blocks']}"]["frames"] == row["blocks"] * 2
+    with pytest.raises(ValueError, match="already exists"):
+        bench.benchmark_hailo(tmp_path, private, tmp_path / "skip", torch_threads=1)
+    assert bench.torch.get_num_threads() == original_threads
+    bench.benchmark_hailo(tmp_path, private, tmp_path / "sparse", runs=2, warmup=0,
+                          packing="active16-v1", include_sympy_timing=False, torch_threads=1,
+                          host_processing="optimized", include_sparse_cpu=True)
+    stronger = json.loads((tmp_path / "sparse.json").read_text())
+    assert len(stronger["samples"]) == 32
+    assert len(stronger["summary"]) == 16
+    assert {s["backend"] for s in stronger["samples"]} == {
+        "torch", "hailo", "sparse-shift-sum", "sparse-cached-shifts"}
+    assert len(stronger["metadata"]["cpu_key_preparation"]) == 2
+    for prep in stronger["metadata"]["cpu_key_preparation"].values():
+        assert prep["preparation_ns"] > 0 and prep["prepared_bytes"] > 0
+    for row in stronger["samples"]:
+        assert row["execution"] == ("npu" if row["backend"] == "hailo" else "cpu")
+    assert bench.torch.get_num_threads() == original_threads
+    for invalid in (0, -1, True, 1.5):
+        with pytest.raises(ValueError, match="positive integer"):
+            bench.benchmark_hailo(tmp_path, private, tmp_path / "invalid", torch_threads=invalid)
 
 
 @pytest.mark.hailo_hardware
@@ -403,7 +537,7 @@ def test_actual_ntru_hef():
     import os
 
     from ntru_pytorch.formats import load
-    from ntru_pytorch.hailo.validation import validate_hardware
+    from ntru_pytorch.hailo.validation import qualify_hardware
 
     artifact = os.environ.get("NTRU_HAILO_ARTIFACT")
     private_path = os.environ.get("NTRU_HAILO_PRIVATE_KEY")
@@ -412,14 +546,9 @@ def test_actual_ntru_hef():
             "Requires a numerically validated NTRU HEF and matching private key; no CPU substitution"
         )
     private = load(private_path)
-    with HailoEncryptor(artifact) as engine:
-        assert validate_hardware(engine, cases=1000)["exact"]
-        key = engine.scheme.key
-        for data in (b"", b"a\0b", bytes(range(256))):
-            actual = engine.encrypt_bytes(key, data, random_source=RandomSource(42))
-            for reference in (SympyNTRU(), TorchNTRU()):
-                assert reference.encrypt_bytes(key, data, random_source=RandomSource(42)) == actual
-                assert reference.decrypt_bytes(private, actual) == data
+    report = qualify_hardware(artifact, private, cases=1000)
+    assert report["hardware_tested"] and report["exact"]
+    assert report["session_opens"] == 3
 
 
 def test_affine_admission_is_separate_profile(compiled_fixture):
@@ -454,3 +583,28 @@ def test_affine_admission_is_separate_profile(compiled_fixture):
     (root / "manifest.json").write_text(json.dumps(m))
     with pytest.raises(ArtifactError, match="1/2"):
         load_artifact(root, compiled=True)
+
+
+def test_benchmark_cli_options(monkeypatch):
+    import sys
+
+    from ntru_pytorch import cli
+    from ntru_pytorch.hailo import cli as hailo_cli
+
+    received = []
+    monkeypatch.setattr(hailo_cli, 'run', received.append)
+    monkeypatch.setattr(sys, 'argv', ['ntru', 'hailo-benchmark', '--skip-sympy-timing',
+                                     '--torch-threads', '6', '--packing', 'active16-v1',
+                                     '--host-processing', 'optimized', '--include-sparse-cpu'])
+    cli.main()
+    assert received[0].skip_sympy_timing is True
+    assert received[0].torch_threads == 6
+    assert received[0].packing == 'active16-v1'
+    assert received[0].host_processing == 'optimized'
+    assert received[0].include_sparse_cpu is True
+    monkeypatch.setattr(sys, 'argv', ['ntru', 'hailo-benchmark'])
+    cli.main()
+    assert received[1].skip_sympy_timing is False
+    assert received[1].torch_threads is None
+    assert received[1].host_processing == "reference"
+    assert received[1].include_sparse_cpu is False

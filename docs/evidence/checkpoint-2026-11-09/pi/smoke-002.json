@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "hardware_tested": true,
+  "hardware_qualification": false,
+  "platform": "Linux-6.12.109+rpt-rpi-2712-aarch64-with-glibc2.36",
+  "python": "3.11.2",
+  "page_size": 16384,
+  "seed": 42,
+  "stage": "complete",
+  "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+  "key_sha256": "54e0c7e244eb1c93c4761b4b99a98e0e8123a13f17663754931650ca08042f03",
+  "artifact_validation_ns": 109769975838,
+  "device": {
+    "architecture": "HAILO8L",
+    "firmware_version": "4.23.0",
+    "board_name": "Hailo-8",
+    "device_id": "0001:01:00.0",
+    "runtime_version": "4.23.0"
+  },
+  "polynomial_probes": 19,
+  "probe_frames": 77,
+  "messages": 3,
+  "session_opens": 3,
+  "cleanup_after_exception": true,
+  "elapsed_ns": 110323954236,
+  "peak_rss_bytes": 71778304,
+  "imported_backends": {
+    "torch": false,
+    "sympy": false,
+    "hailo_platform": true
+  }
+}

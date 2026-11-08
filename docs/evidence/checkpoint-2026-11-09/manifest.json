@@ -1,0 +1,107 @@
+{
+  "pi/smoke-001.json": {
+    "source": "results/raspberry-pi-2026-11-09-001/ntru-pi-results/smoke-001.json",
+    "sha256": "a460566ab67895c1347efa4ddefe10f49fa36c407671a932bd9f7088705744b9",
+    "bytes": 700
+  },
+  "pi/smoke-002.json": {
+    "source": "results/raspberry-pi-2026-11-09-001/ntru-pi-results/smoke-002.json",
+    "sha256": "50e9f79223d0c74ad15ea8ea92fb5b5d5333a1470ece2cc23e48077c62129964",
+    "bytes": 900
+  },
+  "pi/qualification-001.json": {
+    "source": "results/raspberry-pi-2026-11-09-001/ntru-pi-results/qualification-001.json",
+    "sha256": "0af897097267c29cf2d0acf95e7efca41e0644388e4b0c9ed500141958aa078a",
+    "bytes": 1625
+  },
+  "pc/n17-qualification.json": {
+    "source": "results/n701-host-optimization-2026-11-08-001/n17-qualification.json",
+    "sha256": "8decdf5433d28012f46f82bafbcbcdc77285d03034b367fa6dae38816ac7feff",
+    "bytes": 1180
+  },
+  "pc/n107-qualification.json": {
+    "source": "results/n701-host-optimization-2026-11-08-001/n107-qualification.json",
+    "sha256": "0a2370818ffdd7fd4260c4969f4d360b9012ded6db910a4eaa8f8192336f1694",
+    "bytes": 1180
+  },
+  "pc/n701-qualification.json": {
+    "source": "results/n701-host-optimization-2026-11-08-001/n701-qualification.json",
+    "sha256": "9e162675b47efce8d447bd496bdd49edc75cbeda3c451caf1873067fe0f5737c",
+    "bytes": 1180
+  },
+  "pc/oqs-portable-qualification.json": {
+    "source": "results/oqs-integration-2026-11-08-001/check-portable/report.json",
+    "sha256": "f8d0870bbf7d643de2585f74e3b91f712c787f9499b56a975295a2bec587af1c",
+    "bytes": 1443
+  },
+  "pc/oqs-portable-build-manifest.json": {
+    "source": "results/native/oqs/0.16.0/x86_64/portable/manifest.json",
+    "sha256": "3f9480a511b53d53c461327130559605f0bd7b5494f6820cf8b163561fff93e5",
+    "bytes": 6528
+  },
+  "pc/oqs-native-qualification.json": {
+    "source": "results/oqs-integration-2026-11-08-001/check-native/report.json",
+    "sha256": "71926f34d798544ce1aefeaf2607f07e1380a273524bd2989533606cbff0a6db",
+    "bytes": 1440
+  },
+  "pc/oqs-native-build-manifest.json": {
+    "source": "results/native/oqs/0.16.0/x86_64/native/manifest.json",
+    "sha256": "89f030deacae20e92e7b0fecb16042e51977e30c5c6dbe85023cba7cc5a33017",
+    "bytes": 6166
+  },
+  "pc/oqs-arithmetic-summary.json": {
+    "source": "results/oqs-integration-2026-11-08-001/arithmetic/summary.json",
+    "sha256": "9f209fe58ad9a8cdfdf799bffcb2ab1e11fa60e09231d311d64e1c8a812f6754",
+    "bytes": 13742
+  },
+  "pc/oqs-kem-summary.json": {
+    "source": "results/oqs-integration-2026-11-08-001/kem/summary.json",
+    "sha256": "c43d91146ba04d764c84c940cfe4aeba88068b571843fe0349dade5a8b7ace13",
+    "bytes": 6172
+  },
+  "pc/oqs-hardware.json": {
+    "source": "results/oqs-integration-2026-11-08-001/hardware/report.json",
+    "sha256": "4e6ba4795990640cb0a7cfafb6d806657fcfb3aa38c66862b0291c7c10a99bc0",
+    "bytes": 1318
+  },
+  "pc/oqs-interop.json": {
+    "source": "results/oqs-integration-2026-11-08-001/interop/report.json",
+    "sha256": "66e1d646177de437fca3354cfe5f2077cc4034a33d1f5394de95f3f14e4e4f01",
+    "bytes": 109
+  },
+  "pc/oqs-memory-768m.json": {
+    "source": "results/oqs-integration-2026-11-08-001/memory-768m.json",
+    "sha256": "8af96e3226b1add987d47b4da7c52be7fb7c372ec46c7d3633621a10307fb067",
+    "bytes": 1683
+  },
+  "pc/oqs-sanitizer.log": {
+    "source": "results/oqs-integration-2026-11-08-001/sanitizer.log",
+    "sha256": "06e4ecab00298b6245d24c796b7c058f6830e9803377639aefe3c7a690688636",
+    "bytes": 56
+  },
+  "pc/n107-packing-summary.json": {
+    "source": "results/optimization-2026-11-08/optimization-summary.json",
+    "sha256": "a0dd12bb0cc3267427a01b4549f457c65891944a893f87ccadb85acd269f43d6",
+    "bytes": 1172
+  },
+  "pc/n701-host-comparison.json": {
+    "source": "results/n701-host-optimization-2026-11-08-001/comparison.json",
+    "sha256": "df6ca2df2bedbc68e5e48c007873c0749bb268ce007c26a60649c5a83ac7c54c",
+    "bytes": 72783
+  },
+  "pc/n701-sparse-comparison.json": {
+    "source": "results/sparse-cpu-baseline-2026-11-08-001/comparison.json",
+    "sha256": "a38099e592652601e4a52739fe2954570338c3a6eb410cc831be4ae0fd82337b",
+    "bytes": 38881
+  },
+  "pc/checkpoint-pytest.log": {
+    "source": "results/documentation-checkpoint-2026-11-09-001/pytest.log",
+    "sha256": "28d01728a2b6e00a2632ad408e9998708ae617ad1d1b1b9411f53973e69ef34a",
+    "bytes": 206
+  },
+  "pc/checkpoint-ruff.log": {
+    "source": "results/documentation-checkpoint-2026-11-09-001/ruff.log",
+    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "bytes": 19
+  }
+}

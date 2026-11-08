@@ -67,6 +67,27 @@ def test_proof_fails_closed():
         prove_affine(s, s.weights, np.zeros(s.cout), spec)
 
 
+def test_observed_16bit_accumulator_and_pre_rounding_bounds():
+    s = scheme()
+    spec = spec_for(s)
+    spec["accumulator_bits"] = 16
+    spec["internal_error_bounds"] = ["1/64"] * s.cout
+    # The generic symmetric error interval crosses zero; structural integer
+    # bounds before clipping establish that this operation stays nonnegative.
+    with pytest.raises(ArtifactError, match="saturation"):
+        prove_affine(s, s.weights, np.zeros(s.cout), spec)
+    spec["pre_output_rounding_bounds"] = [["0", "17"]] * s.cout
+    proof = prove_affine(s, s.weights, np.zeros(s.cout), spec)
+    assert Fraction(proof["max_error_bound"]) == Fraction(9, 64)
+    spec["accumulator_abs_bounds"] = ["32768"] * s.cout
+    with pytest.raises(ArtifactError, match="overflow"):
+        prove_affine(s, s.weights, np.zeros(s.cout), spec)
+    spec["accumulator_abs_bounds"] = ["1024"] * s.cout
+    spec["pre_output_rounding_bounds"][0] = ["1", "0"]
+    with pytest.raises(ArtifactError, match="Reversed"):
+        prove_affine(s, s.weights, np.zeros(s.cout), spec)
+
+
 def test_input_zero_offset_and_padding_accounted():
     s = scheme()
     spec = spec_for(s)

@@ -1,0 +1,45 @@
+{
+  "hardware_tested": false,
+  "build_manifest_sha256": "89f030deacae20e92e7b0fecb16042e51977e30c5c6dbe85023cba7cc5a33017",
+  "configuration": {
+    "version": "0.16.0",
+    "commit": "5a1a854b0dc9f2141bdc771c555ee60c37950183",
+    "architecture": "x86_64",
+    "profile": "native",
+    "implementation": "avx2",
+    "sanitizer": false,
+    "bridge_abi": 1,
+    "adapter_sources": {
+      "CMakeLists.txt": "fde737667103ade6988e800cd4509bd7804afc4be483ef412db23dc1ebd03d07",
+      "kem_bridge.c": "6db6d2254af8068a95008bc0f2e2b2c40099004e1fa557c9994be9679d756d51",
+      "rq_bridge.c": "89dc66e9fe17cd44f660f82d5fb8a922fa4201b2b463ce705b615f110dcd38f6",
+      "smoke.c": "5923069bd966d56014f08df41ce96d0a1cd7dae310925efe8f01e4428e75eac6"
+    }
+  },
+  "seed": 42,
+  "random_cases": 1000,
+  "stage": "complete",
+  "kat": {
+    "single": "501e000c3eb374ffbfb81b0f16673a6282116465936608d7d164b05635e769e8",
+    "all": "684d7e77641399b136fbb4b9261bdca6e83887453a0565e2aef3540821138ada"
+  },
+  "kem_roundtrips": 1000,
+  "kat_vectors": 100,
+  "implicit_rejection": true,
+  "kem_reopen": true,
+  "arithmetic_boundary_cases": 1412,
+  "arithmetic_random_cases": 1000,
+  "full_range_residue_cases": 16,
+  "project_encryption": {
+    "messages": 6,
+    "backends": [
+      "SymPy",
+      "PyTorch",
+      "SparseNTRU shift-sum",
+      "SparseNTRU cached-shifts"
+    ],
+    "hardware_tested": false
+  },
+  "passed": true,
+  "elapsed_ns": 26284147442
+}

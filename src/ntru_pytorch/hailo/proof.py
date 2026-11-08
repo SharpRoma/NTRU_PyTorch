@@ -30,12 +30,13 @@ def prove_affine(scheme, weights, bias, spec):
         raise ArtifactError("Only a fully accounted single linear operation is supported")
     if spec.get("output_rounding") not in ("nearest", "truncate"):
         raise ArtifactError("Unaccounted output rounding")
-    if spec.get("accumulator_bits") != 32:
+    bits = spec.get("accumulator_bits")
+    if type(bits) is not int or bits not in (16, 32):
         raise ArtifactError("Unknown accumulator semantics")
     accumulator_bounds = spec.get("accumulator_abs_bounds")
     if not isinstance(accumulator_bounds, list) or len(accumulator_bounds) != scheme.cout:
         raise ArtifactError("Missing integer accumulator bounds")
-    if any(rational(v) < 0 or rational(v) >= 2**31 for v in accumulator_bounds):
+    if any(rational(v) < 0 or rational(v) >= 2 ** (bits - 1) for v in accumulator_bounds):
         raise ArtifactError("Accumulator overflow is not excluded")
     inp, out = spec["input"], spec["output"]
     ins, izp = rational(inp["scale"]), rational(inp["zero_point"])
@@ -53,6 +54,13 @@ def prove_affine(scheme, weights, bias, spec):
     if not isinstance(errors, list) or len(errors) != scheme.cout:
         raise ArtifactError("Missing per-output internal rounding bounds")
     low, high = outs * (-ozp), outs * (255 - ozp)
+    # Optional independently extracted bounds before output rounding/clipping.
+    # These must come from the integer operations, not from clipped samples.
+    pre_output = spec.get("pre_output_rounding_bounds")
+    if pre_output is not None and (
+        not isinstance(pre_output, list) or len(pre_output) != scheme.cout
+    ):
+        raise ArtifactError("Missing per-output pre-rounding bounds")
     bounds = []
     for k, row in enumerate(weights):
         all_weights = [rational(v) for v in row]
@@ -69,6 +77,17 @@ def prove_affine(scheme, weights, bias, spec):
         bound = abs(base) + sum(deviations[:16]) + internal + outs
         minimum = base + sum(sorted(v for v in delta if v < 0)[:16]) - internal
         maximum = base + sum(sorted((v for v in delta if v > 0), reverse=True)[:16]) + internal
+        if pre_output is not None:
+            pair = pre_output[k]
+            if not isinstance(pair, list) or len(pair) != 2:
+                raise ArtifactError("Malformed pre-rounding bounds")
+            certified_low, certified_high = map(rational, pair)
+            if certified_low > certified_high:
+                raise ArtifactError("Reversed pre-rounding bounds")
+            minimum = max(minimum, certified_low)
+            maximum = min(maximum, certified_high)
+            if minimum > maximum:
+                raise ArtifactError("Inconsistent pre-rounding bounds")
         if minimum < low or maximum > high:
             raise ArtifactError("Output saturation cannot be excluded")
         if bound >= Fraction(1, 2):
@@ -89,8 +108,10 @@ def encode_affine(frames, spec):
 
 
 def decode_affine(codes, spec):
-    if codes.dtype != np.uint8:
-        raise ArtifactError("Expected raw UINT8 output codes")
+    return decode_affine_lookup(codes, affine_lookup(spec))
+
+
+def affine_lookup(spec):
     s, z = rational(spec["output"]["scale"]), rational(spec["output"]["zero_point"])
     # Exact lookup avoids floating point introducing new errors during recovery.
     lookup = []
@@ -98,7 +119,33 @@ def decode_affine(codes, spec):
         value = s * (code - z)
         rounded = (value + Fraction(1, 2)).numerator // (value + Fraction(1, 2)).denominator
         lookup.append(rounded)
-    values = np.asarray(lookup, dtype=np.int64)[codes]
+    lookup = np.asarray(lookup, dtype=np.int64)
+    lookup.setflags(write=False)
+    return lookup
+
+
+def decode_affine_lookup(codes, lookup):
+    if codes.dtype != np.uint8:
+        raise ArtifactError("Expected raw UINT8 output codes")
+    values = lookup[codes]
     if np.any(values < 0) or np.any(values > 16):
         raise ArtifactError("Recovered partial sum outside [0,16]")
     return values.astype(np.uint8)
+
+
+def compact_affine_lookup(lookup):
+    """Compress an exact rational-derived table, preserving invalid-code rejection."""
+    compact = np.full(256, 255, dtype=np.uint8)
+    valid = (lookup >= 0) & (lookup <= 16)
+    compact[valid] = lookup[valid].astype(np.uint8)
+    compact.setflags(write=False)
+    return compact
+
+
+def decode_affine_compact(codes, lookup):
+    if codes.dtype != np.uint8:
+        raise ArtifactError("Expected raw UINT8 output codes")
+    values = lookup[codes]
+    if np.any(values == 255):
+        raise ArtifactError("Recovered partial sum outside [0,16]")
+    return values

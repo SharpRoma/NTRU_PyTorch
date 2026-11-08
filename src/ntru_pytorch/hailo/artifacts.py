@@ -20,7 +20,11 @@ class ArtifactError(ValueError):
 
 
 def sha256(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def export_onnx(scheme, path):
@@ -160,8 +164,10 @@ def validate_compiled(root, manifest, scheme):
                 raise ArtifactError("Unsupported affine stream shape or type")
             if any(port[k] != spec[direction][k] for k in ("scale", "zero_point")):
                 raise ArtifactError("Affine stream constants differ from evidence")
-        with np.load(root / "numeric-evidence.npz", allow_pickle=False) as evidence:
-            prove_affine(scheme, evidence["effective_weights"], evidence["effective_bias"], spec)
+        from .evidence import evidence_rows
+
+        with evidence_rows(root / "numeric-evidence.npz", scheme.weights.shape) as (weights, bias):
+            prove_affine(scheme, weights, bias, spec)
         return
     if c.get("arithmetic_profile", "unit-v1") != "unit-v1":
         raise ArtifactError("Unknown arithmetic profile")
@@ -181,11 +187,13 @@ def validate_compiled(root, manifest, scheme):
     }
     if any(report.get(k) != v for k, v in expected.items()) or not report.get("compiler_version"):
         raise ArtifactError("Compiler report does not establish the exact linear profile")
-    with np.load(root / "numeric-evidence.npz", allow_pickle=False) as evidence:
-        w = evidence["effective_weights"]
-        if w.shape != scheme.weights.shape or not np.array_equal(w, scheme.weights):
+    from .evidence import evidence_rows
+
+    with evidence_rows(root / "numeric-evidence.npz", scheme.weights.shape) as (weights, bias):
+        if any(not np.array_equal(row, expected)
+               for row, expected in zip(weights, scheme.weights, strict=True)):
             raise ArtifactError("Compiled effective weights differ from binary weights")
-        if evidence["effective_bias"].shape != (scheme.cout,) or np.any(evidence["effective_bias"]):
+        if bias.shape != (scheme.cout,) or np.any(bias):
             raise ArtifactError("Compiled graph has a nonzero or malformed bias")
     for direction, size in (("input", scheme.cin), ("output", scheme.cout)):
         port = c.get(direction, {})

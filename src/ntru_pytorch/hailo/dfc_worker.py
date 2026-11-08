@@ -8,7 +8,9 @@ of compiled integer semantics.
 import argparse
 import hashlib
 import json
+import os
 import time
+import traceback
 from importlib.metadata import version
 from pathlib import Path
 
@@ -30,9 +32,11 @@ def main():
         "hardware_tested": False,
         "extraction_supported": False,
         "timings_ns": {},
+        "execution_device": "cpu",
     }
     start = time.perf_counter_ns()
     try:
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
         import numpy as np
         from hailo_sdk_client import ClientRunner, InferenceContext
 
@@ -53,7 +57,11 @@ def main():
         hn = runner.get_hn_dict()
         (root / "parsed-hn.json").write_text(json.dumps(hn, indent=2, default=lambda v: v.tolist()))
         script = "model_optimization_flavor(optimization_level=0, compression_level=0)\n"
-        if cfg["profile"] == "unit-v1":
+        script += (
+            "model_optimization_config(calibration, batch_size=1, "
+            f"calibset_size={cfg['calibration_frames']})\n"
+        )
+        if cfg["profile"] in ("unit-v1", "binary-circulant-affine-v1"):
             layers = hn.get("layers", {})
             names = [
                 name
@@ -65,7 +73,12 @@ def main():
                     "Unsupported parsed topology: expected one input and one convolution"
                 )
             for name in names:
-                script += f"quantization_param([{name}], force_range_out=[0,255])\n"
+                # Give the affine output headroom; binary host input codes stay 0/1.
+                high = 32 if (
+                    cfg["profile"] == "binary-circulant-affine-v1"
+                    and layers[name]["type"] == "conv"
+                ) else 255
+                script += f"quantization_param([{name}], force_range_out=[0,{high}])\n"
         (root / "model.alls").write_text(script)
         runner.load_model_script(script)
         if (
@@ -79,7 +92,9 @@ def main():
             native = np.asarray(runner.infer(context, data, batch_size=1)).reshape(expected.shape)
         if not np.array_equal(native, expected):
             raise RuntimeError("DFC native graph differs from exact reference")
+        np.save(root / "native-outputs.npy", native, allow_pickle=False)
         stage = time.perf_counter_ns()
+        (root / "optimization").mkdir()
         runner.optimize(data, work_dir=str(root / "optimization"))
         runner.save_har(str(root / "quantized.har"))
         report["timings_ns"]["optimize"] = time.perf_counter_ns() - stage
@@ -104,8 +119,19 @@ def main():
             hef_sha256=digest(root / "model.hef"),
             error="Raw translated SDK parameters and HN saved. Audited numeric extraction is required before admission; no fabricated effective weights or rounding bounds are emitted.",
         )
+        if cfg["profile"] == "binary-circulant-affine-v1":
+            from dfc_extract import extract_affine
+
+            try:
+                report["compiled"] = extract_affine(runner, root, cfg)
+                report["compiled"]["compilation_ns"] = report["timings_ns"]["compile"]
+                report.update(status="ready-for-admission", extraction_supported=True)
+                report.pop("error", None)
+            except Exception as exc:
+                report.update(status="unsupported", error=f"{type(exc).__name__}: {exc}")
     except Exception as exc:
         report.update(status="failed", error=f"{type(exc).__name__}: {exc}")
+        (root / "failure-traceback.txt").write_text(traceback.format_exc())
     report["timings_ns"]["total"] = time.perf_counter_ns() - start
     (root / "build-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report, indent=2))

@@ -1,0 +1,47 @@
+{
+  "hardware_tested": true,
+  "key_sha256": "1b5499506e2a352b808519be3c326c379857fd1bfbd89fe1534be2d18cb4af5a",
+  "hef_sha256": "2cf4e9b28f32600ecdd8dfa516aa50275d2588357860a929a31b2d774af198b2",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+    "packages": {
+      "numpy": "1.26.4",
+      "torch": "2.15.0",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "hailort": "4.23.0",
+      "netifaces": "0.11.0"
+    }
+  },
+  "seed": 42,
+  "packing": "active16-v1",
+  "cache_affine_lut": true,
+  "host_processing": "optimized",
+  "device": {
+    "architecture": "HAILO8L",
+    "firmware_version": "4.23.0",
+    "board_name": "Hailo-8",
+    "device_id": "0000:25:00.0",
+    "runtime_version": "4.23.0"
+  },
+  "partial_sums": {
+    "stage": "hardware",
+    "cases": 1238,
+    "random_cases": 1000,
+    "seed": 42,
+    "exact": true,
+    "packing": "active16-v1",
+    "host_processing": "optimized"
+  },
+  "messages": [
+    "empty",
+    "binary_nuls",
+    "unicode",
+    "all_bytes_multiblock"
+  ],
+  "exact": true,
+  "session_opens": 3,
+  "cleanup_after_host_exception": "passed",
+  "cross_decryption": "passed"
+}

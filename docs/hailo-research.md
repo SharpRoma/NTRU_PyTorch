@@ -1,8 +1,10 @@
 # Exact Hailo polynomial encryption preparation
 
+> Current checkpoint and continuation: [Russian handoff, 9 November 2026](CODEX_HANDOFF_2026-11-09.md). Historical sections below retain their original stage boundaries. N701 has now also passed real hardware qualification on Raspberry Pi; ARM performance and ARM liboqs are still pending.
+
 ## Status and experimental boundary
 
-This module implements an exact host model, ONNX export, an admission contract for compiler artifacts, and a HailoRT 4.23 runtime adapter. No NTRU HEF has been compiled or validated on hardware. Passing CPU or ONNX tests does not establish that DFC can place this graph or preserve its exact arithmetic. The successful ResNet-18 device smoke test only establishes that the installed accelerator works.
+This module implements an exact host model, ONNX export, an admission contract for compiler artifacts, and a HailoRT 4.23 runtime adapter. N=17 and N=107 affine HEFs have been compiled, numerically admitted and hardware-qualified on Hailo-8L with their fixed experimental keys. The tests ran with Secure Boot disabled; loading the driver with Secure Boot enabled is not established. The historical installation and extraction results are recorded in [the Ubuntu run guide](hailo-ubuntu-run.md). Passing CPU or ONNX tests does not establish that DFC can place this graph or preserve its exact arithmetic. The successful ResNet-18 device smoke test only establishes that the installed accelerator works.
 
 The selected first profile fixes the public key in binary weights. It accelerates only the candidate multiplication r*h; sampling, encoding, recombination, coefficient reduction and centering stay on CPU. Secret-key decryption is not implemented on Hailo. One HEF belongs to one canonical public key and ring. The format of ciphertexts and the SymPy/PyTorch implementations remain unchanged.
 
@@ -46,7 +48,7 @@ Use SoftwareHailoEncryptor(public) explicitly for CPU experiments. HailoEncrypto
 
 ## Compiled artifact contract for the next stage
 
-The next stage must produce model.hef plus a trusted extraction of its numerical graph. The repository does not provide a DFC extractor yet. Do not hand-author a success assertion as a substitute for extracting and inspecting the actual compiler representation.
+The next stage must produce model.hef plus a trusted extraction of its numerical graph. A narrow DFC 3.33 affine extractor now supports the observed zero-bias binary Conv1x1 topology. It verifies the actual 16/32-bit accumulator and APU transforms; the strict unit profile still has no admission certificate. See [the Ubuntu run guide](hailo-ubuntu-run.md). Do not hand-author a success assertion as a substitute for extracting and inspecting the actual compiler representation.
 
 Set manifest.compiled to an object with runtime_version="4.23.0", architecture="HAILO8L", and files mapping model.hef, numeric-evidence.npz and compiler-report.json to their SHA256 digests. Input/output port objects contain name, shape=[1,1,Cin or Cout], dtype="UINT8", scale=1, zero_point=0. Actual HEF stream names, shapes, UINT8 types and quantization are checked again before opening the device.
 
@@ -84,7 +86,9 @@ PyHailoRT 4.23 requires NumPy <2. The hailo-runtime extra constrains NumPy accor
 The vendor wheel also declares netifaces. For Windows CPython 3.11 its installation from PyPI requires Microsoft C++ Build Tools; those tools are not installed by this preparation stage. In the current environment pip check still reports missing netifaces. The vendor uses it in ethernet_utils; PCIe imports and the previous PCIe smoke test do not require it, but full vendor dependency health is not established. The environment report records its absence. Resolve it with the official compiler prerequisites before enabling Ethernet tooling; do not fake a package or substitute another distribution to silence the requirement.
 
 
-## DFC build stage and current checkpoint
+## Historical Windows and WSL checkpoint
+
+The paragraphs below preserve the transfer checkpoint. Native Ubuntu installation, compiled N=17, the implemented affine extractor and remaining hardware work supersede its pending-stage statements; see [the current Ubuntu run guide](hailo-ubuntu-run.md). The setup script now targets Ubuntu 24.04/Python 3.12.
 
 `hailo-build` runs the standalone DFC 3.33 worker inside Ubuntu-22.04 WSL using `/opt/ntru-dfc/bin/python`. The worker does not import the host project or require Torch. Its ClientRunner translation, optimization, inference, archive and compilation interfaces were checked against the downloaded official 3.33 wheel source, but have not yet executed in Linux. `tools/setup_dfc_ubuntu.sh` provisions the dedicated Ubuntu environment after WSL2 is operational. It preserves an existing venv by refusing to overwrite it.
 

@@ -1,8 +1,9 @@
 import argparse
 import json
 import logging
+import platform
 
-from . import PRESETS, RandomSource, SympyNTRU, TorchNTRU, generate_keys
+from . import PRESETS, RandomSource
 
 
 def main():
@@ -10,6 +11,10 @@ def main():
     parser.add_argument(
         "command",
         choices=[
+            "oqs-info",
+            "oqs-check",
+            "oqs-kem-benchmark",
+            "oqs-arith-benchmark",
             "demo",
             "trace",
             "benchmark",
@@ -31,6 +36,13 @@ def main():
     parser.add_argument("--private-key")
     parser.add_argument("--cases", type=int, default=1000)
     parser.add_argument("--hardware", action="store_true")
+    parser.add_argument("--packing", choices=["position16-v1", "active16-v1"],
+                        default="position16-v1")
+    parser.add_argument("--compare-variants", action="store_true")
+    parser.add_argument("--skip-sympy-timing", action="store_true")
+    parser.add_argument("--torch-threads", type=int)
+    parser.add_argument("--host-processing", choices=["reference", "optimized"], default="reference")
+    parser.add_argument("--include-sparse-cpu", action="store_true")
     parser.add_argument("--report")
     parser.add_argument("--build-dir", default="results/hailo-build")
     parser.add_argument("--admit-output", default="results/hailo-admitted")
@@ -40,12 +52,22 @@ def main():
         "--quant-profile", choices=["unit-v1", "binary-circulant-affine-v1"], default="unit-v1"
     )
     parser.add_argument("--calibration-samples", type=int, default=1024)
+    parser.add_argument("--oqs-root", default="results/native/oqs/0.16.0/" + platform.machine())
+    parser.add_argument("--oqs-build")
+    parser.add_argument("--oqs-profile", choices=["portable", "native"], default="portable")
+    parser.add_argument("--qualification-root", default="results/oqs-qualification")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)
     if args.output is None:
         args.output = (
+            "results/" + args.command if args.command.startswith("oqs-") else
             "results/hailo-benchmark" if args.command == "hailo-benchmark" else "results/benchmark"
         )
+    if args.command.startswith("oqs-"):
+        from .oqs.cli import run
+
+        run(args)
+        return
     if args.command.startswith("hailo-"):
         from .hailo.cli import run
 
@@ -59,6 +81,8 @@ def main():
         )
         print("Saved JSON and CSV measurements")
         return
+    from . import SympyNTRU, TorchNTRU, generate_keys
+
     public, private = generate_keys(PRESETS[args.preset], random_source=RandomSource(args.seed))
     engines = (SympyNTRU(), TorchNTRU())
     if args.command == "demo":

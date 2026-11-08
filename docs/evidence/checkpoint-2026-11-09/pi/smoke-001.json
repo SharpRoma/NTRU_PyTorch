@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "hardware_tested": false,
+  "hardware_qualification": false,
+  "platform": "Linux-6.12.109+rpt-rpi-2712-aarch64-with-glibc2.36",
+  "python": "3.11.2",
+  "page_size": 16384,
+  "seed": 42,
+  "stage": "NPU_partial_sums",
+  "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+  "key_sha256": "54e0c7e244eb1c93c4761b4b99a98e0e8123a13f17663754931650ca08042f03",
+  "artifact_validation_ns": 109972490091,
+  "error": "HailoRTException('libhailort failed with error: 8 (HAILO_INTERNAL_FAILURE)')",
+  "elapsed_ns": 110158258573,
+  "peak_rss_bytes": 58671104,
+  "imported_backends": {
+    "torch": false,
+    "sympy": false,
+    "hailo_platform": true
+  }
+}

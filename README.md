@@ -1,5 +1,7 @@
 # NTRU PyTorch research library
 
+Актуальное состояние и передача другому чату Codex: **[docs/CODEX_HANDOFF_2026-11-09.md](docs/CODEX_HANDOFF_2026-11-09.md)**. N701 прошёл реальную аппаратную проверку на Raspberry Pi 5 1 ГБ; скорость на Pi и liboqs для ARM ещё не проверены.
+
 Two independent implementations of NTRU polynomial encryption: SymPy and PyTorch CPU INT64. A ciphertext produced by either backend can be decrypted by either backend. Identical keys, message coefficients and blinding polynomials produce identical ciphertexts.
 
 This is an experimental NTRUEncrypt-style research implementation, not an implementation of the standardized NTRU-HPS/HRSS KEM. Preset names are historical experiment labels and do not assert security levels. The message format is not authenticated; successful parsing does not prove ciphertext authenticity. CPU INT64 support does not establish constant-time execution or NPU feasibility.
@@ -61,7 +63,7 @@ Legacy public files do not contain df/dg; the reader uses placeholders df=1, dg=
 
 ## Research method and validation
 
-`src/ntru_pytorch/tensor.py` isolates the exact tensor kernels without SymPy calls. Encryption uses full conv1d and cyclic reduction; decryption uses circulant matrix multiplication. CPU INT64 shapes and conservative accumulation bounds are checked; unsupported ranges raise exceptions. ONNX, CUDA and NPU are future work.
+`src/ntru_pytorch/tensor.py` isolates the exact tensor kernels without SymPy calls. Encryption uses full conv1d and cyclic reduction; decryption uses circulant matrix multiplication. CPU INT64 shapes and conservative accumulation bounds are checked; unsupported ranges raise exceptions. Experimental ONNX export and a Hailo pipeline are available separately; hardware qualification applies to the fixed keys and admitted HEFs described below.
 
 Tests include a fixed artificial-key vector captured from the original Git HEAD, independent small convolution references, randomized differential arithmetic, all four backend combinations, UTF-8 and binary payloads, legacy readers, malformed inputs and all five large preset key-generation runs. Large tests are marked `slow` and may take minutes. Synthetic identity-key fixtures are strictly for regression testing.
 
@@ -70,6 +72,16 @@ Benchmarks validate equality before timing, use the same operands and report raw
 
 ## Experimental Hailo preparation
 
-The optional `ntru_pytorch.hailo` module exports a fixed-public-key binary Conv2d graph and checks its exact host/ONNX arithmetic. It includes a fail-closed HailoRT 4.23 adapter, artifact checksums, numerical-evidence requirements and hardware benchmark commands. There is no compiled NTRU HEF yet; CPU simulation is explicitly named `SoftwareHailoEncryptor` and is never reported as hardware execution.
+The optional `ntru_pytorch.hailo` module exports a fixed-public-key binary Conv2d graph and checks its exact host/ONNX arithmetic. It includes a fail-closed HailoRT 4.23 adapter, artifact checksums, numerical-evidence requirements and hardware benchmark commands. N=17, N=107 and N=701 HEFs have been compiled, numerically admitted and tested for exact hardware results with their fixed experimental keys on Hailo-8L. Research tests use the user-selected configuration with Secure Boot disabled. See [the Ubuntu run record](docs/hailo-ubuntu-run.md) and [the N=701 hardware benchmark](docs/hailo-n701-benchmark.md). CPU simulation is explicitly named `SoftwareHailoEncryptor` and is never reported as hardware execution.
 
 Install `.[hailo-export]` for ONNX tools and see [the Hailo research guide](docs/hailo-research.md) for preparation, artifact admission, commands, measured boundaries and the next compiler stage. No firmware update, DFC installation or change to the current device runtime is part of this module.
+
+For active-coefficient packing, cached affine recovery and the four-variant hardware comparison, see [the optimization guide](docs/hailo-optimization.md).
+
+For exact grouped reconstruction, compact LUT decoding and the optional `--host-processing optimized` mode, see [the CPU processing comparison](docs/hailo-host-processing.md). The default remains `reference`.
+
+Desktop installation remains unchanged. For a separate lean runtime wheel, bounded-memory admission of existing HEFs and preparation for Raspberry Pi, see [the edge runtime guide](docs/edge-runtime.md).
+
+`SparseNTRU` adds exact NumPy CPU baselines using sparse ternary multiplication and optional prepared key shifts. See [the stronger CPU comparison](docs/sparse-cpu-baseline.md): on the tested desktop N=701 workload it outperforms both the original PyTorch backend and Hailo. Existing defaults are unchanged.
+
+Внешние CPU-ориентиры liboqs 0.16.0 добавлены отдельно от существующих backend: публичный NTRU-HRSS-701 KEM и upstream C-ядро циклического умножения для нашего N701-шифрования. Сборка локальная, профили clean/AVX2 закреплены commit и SHA256; KEM и прикладное шифрование измеряются раздельно. Инструкция, границы сравнения и подготовка AArch64: [docs/liboqs-integration.md](docs/liboqs-integration.md).

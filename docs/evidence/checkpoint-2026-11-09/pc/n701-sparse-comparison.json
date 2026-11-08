@@ -1,0 +1,1564 @@
+{
+  "status": "passed",
+  "hardware_tested": true,
+  "exact": true,
+  "software_tests": "121 passed, 1 hardware deselected",
+  "sample_count": 640,
+  "backends": [
+    "torch",
+    "sparse-shift-sum",
+    "sparse-cached-shifts",
+    "hailo"
+  ],
+  "summary": [
+    {
+      "backend": "torch",
+      "blocks": 1,
+      "measurements": 40,
+      "median_ns": 3086259.5,
+      "p95_ns": 3163444.55,
+      "payload_bytes": 79,
+      "blocks_per_second": 324.01682360151506,
+      "bytes_per_second": 25597.329064519687
+    },
+    {
+      "backend": "torch",
+      "blocks": 8,
+      "measurements": 40,
+      "median_ns": 24252422.5,
+      "p95_ns": 26012875.149999995,
+      "payload_bytes": 693,
+      "blocks_per_second": 329.86395482760537,
+      "bytes_per_second": 28574.465086941316
+    },
+    {
+      "backend": "torch",
+      "blocks": 32,
+      "measurements": 40,
+      "median_ns": 96426226.0,
+      "p95_ns": 99650366.8,
+      "payload_bytes": 2796,
+      "blocks_per_second": 331.85992366848416,
+      "bytes_per_second": 28996.2608305338
+    },
+    {
+      "backend": "torch",
+      "blocks": 128,
+      "measurements": 40,
+      "median_ns": 386261776.5,
+      "p95_ns": 389941406.25,
+      "payload_bytes": 11208,
+      "blocks_per_second": 331.38148216433734,
+      "bytes_per_second": 29016.59103201479
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "measurements": 40,
+      "median_ns": 550022.5,
+      "p95_ns": 560865.0499999999,
+      "payload_bytes": 79,
+      "blocks_per_second": 1818.1074410592294,
+      "bytes_per_second": 143630.48784367912
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "measurements": 40,
+      "median_ns": 4019226.5,
+      "p95_ns": 4166378.5,
+      "payload_bytes": 693,
+      "blocks_per_second": 1990.4327362491265,
+      "bytes_per_second": 172421.2357775806
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "measurements": 40,
+      "median_ns": 15865443.0,
+      "p95_ns": 16288222.9,
+      "payload_bytes": 2796,
+      "blocks_per_second": 2016.9622745485267,
+      "bytes_per_second": 176232.07873867752
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "measurements": 40,
+      "median_ns": 62831996.5,
+      "p95_ns": 63618104.6,
+      "payload_bytes": 11208,
+      "blocks_per_second": 2037.1786212459444,
+      "bytes_per_second": 178380.453022848
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "measurements": 40,
+      "median_ns": 473256.0,
+      "p95_ns": 501118.0999999997,
+      "payload_bytes": 79,
+      "blocks_per_second": 2113.0212823503557,
+      "bytes_per_second": 166928.68130567812
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "measurements": 40,
+      "median_ns": 3450551.0,
+      "p95_ns": 3558114.5,
+      "payload_bytes": 693,
+      "blocks_per_second": 2318.4702964830835,
+      "bytes_per_second": 200837.4894328471
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "measurements": 40,
+      "median_ns": 13571612.5,
+      "p95_ns": 13822903.549999999,
+      "payload_bytes": 2796,
+      "blocks_per_second": 2357.8627815965124,
+      "bytes_per_second": 206018.2605419953
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "measurements": 40,
+      "median_ns": 53838249.5,
+      "p95_ns": 54426403.199999996,
+      "payload_bytes": 11208,
+      "blocks_per_second": 2377.4918610606014,
+      "bytes_per_second": 208179.1310841189
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "measurements": 40,
+      "median_ns": 1484765.0,
+      "p95_ns": 1568473.5499999998,
+      "payload_bytes": 79,
+      "blocks_per_second": 673.5072553569083,
+      "bytes_per_second": 53207.07317319576
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "measurements": 40,
+      "median_ns": 9055829.5,
+      "p95_ns": 10894778.1,
+      "payload_bytes": 693,
+      "blocks_per_second": 883.4088583491992,
+      "bytes_per_second": 76525.29235449938
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "measurements": 40,
+      "median_ns": 25912888.0,
+      "p95_ns": 28448539.9,
+      "payload_bytes": 2796,
+      "blocks_per_second": 1234.9067382994901,
+      "bytes_per_second": 107899.97625891796
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "measurements": 40,
+      "median_ns": 105811731.5,
+      "p95_ns": 115865228.85,
+      "payload_bytes": 11208,
+      "blocks_per_second": 1209.695732084301,
+      "bytes_per_second": 105923.98254063161
+    }
+  ],
+  "comparisons": [
+    {
+      "round": 1,
+      "blocks": 1,
+      "torch_ns": 3089459.0,
+      "sparse-shift-sum_ns": 551557.0,
+      "sparse-cached-shifts_ns": 477566.0,
+      "hailo_ns": 1481994.0,
+      "torch_over_cached": 6.469177035216075,
+      "hailo_over_cached": 3.103223428803558,
+      "hailo_over_shift_sum": 2.686928096280167
+    },
+    {
+      "round": 1,
+      "blocks": 8,
+      "torch_ns": 24271611.0,
+      "sparse-shift-sum_ns": 4026417.0,
+      "sparse-cached-shifts_ns": 3497640.0,
+      "hailo_ns": 10708707.0,
+      "torch_over_cached": 6.939425155247538,
+      "hailo_over_cached": 3.0616950286478883,
+      "hailo_over_shift_sum": 2.6596120074001277
+    },
+    {
+      "round": 1,
+      "blocks": 32,
+      "torch_ns": 96766967.0,
+      "sparse-shift-sum_ns": 15934622.5,
+      "sparse-cached-shifts_ns": 13725389.0,
+      "hailo_ns": 25912888.0,
+      "torch_over_cached": 7.0502167188121225,
+      "hailo_over_cached": 1.8879529024641852,
+      "hailo_over_shift_sum": 1.6262003069103144
+    },
+    {
+      "round": 1,
+      "blocks": 128,
+      "torch_ns": 386912119.0,
+      "sparse-shift-sum_ns": 63090885.0,
+      "sparse-cached-shifts_ns": 54179089.0,
+      "hailo_ns": 105775391.5,
+      "torch_over_cached": 7.141355200712216,
+      "hailo_over_cached": 1.952328720403549,
+      "hailo_over_shift_sum": 1.6765558368693037
+    },
+    {
+      "round": 2,
+      "blocks": 1,
+      "torch_ns": 3081307.5,
+      "sparse-shift-sum_ns": 547387.5,
+      "sparse-cached-shifts_ns": 469202.0,
+      "hailo_ns": 1496160.5,
+      "torch_over_cached": 6.567123541672883,
+      "hailo_over_cached": 3.1887342764949853,
+      "hailo_over_shift_sum": 2.7332748738325225
+    },
+    {
+      "round": 2,
+      "blocks": 8,
+      "torch_ns": 24248303.5,
+      "sparse-shift-sum_ns": 4006300.0,
+      "sparse-cached-shifts_ns": 3436857.5,
+      "hailo_ns": 7494533.5,
+      "torch_over_cached": 7.055370640185111,
+      "hailo_over_cached": 2.180635507873108,
+      "hailo_over_shift_sum": 1.8706870429074207
+    },
+    {
+      "round": 2,
+      "blocks": 32,
+      "torch_ns": 96159781.5,
+      "sparse-shift-sum_ns": 15779899.0,
+      "sparse-cached-shifts_ns": 13515842.5,
+      "hailo_ns": 25888448.5,
+      "torch_over_cached": 7.114597665665311,
+      "hailo_over_cached": 1.915415076788591,
+      "hailo_over_shift_sum": 1.6405965906372404
+    },
+    {
+      "round": 2,
+      "blocks": 128,
+      "torch_ns": 384829309.0,
+      "sparse-shift-sum_ns": 62623658.0,
+      "sparse-cached-shifts_ns": 53495709.5,
+      "hailo_ns": 105811731.5,
+      "torch_over_cached": 7.193648099947156,
+      "hailo_over_cached": 1.9779479978670065,
+      "hailo_over_shift_sum": 1.6896446946615606
+    }
+  ],
+  "phases": [
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "total_ns",
+      "median_ns": 550022.5,
+      "p95_ns": 560865.0499999999
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "key_and_validation_ns",
+      "median_ns": 58825.5,
+      "p95_ns": 66338.54999999997
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "sparse_product_ns",
+      "median_ns": 135671.5,
+      "p95_ns": 149036.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "reduction_ns",
+      "median_ns": 63391.0,
+      "p95_ns": 70451.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "polynomial_total_ns",
+      "median_ns": 257839.0,
+      "p95_ns": 272620.0
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 735.0,
+      "p95_ns": 790.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "message_encode_ns",
+      "median_ns": 10950.0,
+      "p95_ns": 11325.999999999998
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 269813.5,
+      "p95_ns": 279567.55
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 1,
+      "phase": "encrypt_total_ns",
+      "median_ns": 542927.0,
+      "p95_ns": 553968.0
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "total_ns",
+      "median_ns": 4019226.5,
+      "p95_ns": 4166378.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "key_and_validation_ns",
+      "median_ns": 432416.0,
+      "p95_ns": 444327.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "sparse_product_ns",
+      "median_ns": 991413.0,
+      "p95_ns": 1026878.95
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "reduction_ns",
+      "median_ns": 401105.5,
+      "p95_ns": 416568.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "polynomial_total_ns",
+      "median_ns": 1825933.0,
+      "p95_ns": 1861183.5
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 800.0,
+      "p95_ns": 899.9999999999994
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "message_encode_ns",
+      "median_ns": 12250.0,
+      "p95_ns": 13406.49999999999
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 2135922.0,
+      "p95_ns": 2180779.05
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 8,
+      "phase": "encrypt_total_ns",
+      "median_ns": 3980956.0,
+      "p95_ns": 4128529.0
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "total_ns",
+      "median_ns": 15865443.0,
+      "p95_ns": 16288222.9
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "key_and_validation_ns",
+      "median_ns": 1721869.0,
+      "p95_ns": 1943353.299999999
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "sparse_product_ns",
+      "median_ns": 3912226.0,
+      "p95_ns": 4130434.7999999993
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "reduction_ns",
+      "median_ns": 1568696.0,
+      "p95_ns": 1593864.45
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "polynomial_total_ns",
+      "median_ns": 7219587.0,
+      "p95_ns": 7753231.85
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 980.0,
+      "p95_ns": 1237.4999999999995
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "message_encode_ns",
+      "median_ns": 15065.0,
+      "p95_ns": 23176.99999999999
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 8456029.0,
+      "p95_ns": 8563159.05
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 32,
+      "phase": "encrypt_total_ns",
+      "median_ns": 15723651.0,
+      "p95_ns": 16150683.4
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "total_ns",
+      "median_ns": 62831996.5,
+      "p95_ns": 63618104.6
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "key_and_validation_ns",
+      "median_ns": 6812434.5,
+      "p95_ns": 7106357.499999999
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "sparse_product_ns",
+      "median_ns": 15551496.0,
+      "p95_ns": 15723928.4
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "reduction_ns",
+      "median_ns": 6199335.5,
+      "p95_ns": 6298961.0
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "polynomial_total_ns",
+      "median_ns": 28573253.0,
+      "p95_ns": 29103320.55
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 1305.0,
+      "p95_ns": 1730.0
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "message_encode_ns",
+      "median_ns": 31566.0,
+      "p95_ns": 41782.95
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 33707175.0,
+      "p95_ns": 34214517.85
+    },
+    {
+      "backend": "sparse-shift-sum",
+      "blocks": 128,
+      "phase": "encrypt_total_ns",
+      "median_ns": 62289394.5,
+      "p95_ns": 63050442.4
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "total_ns",
+      "median_ns": 473256.0,
+      "p95_ns": 501118.0999999997
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "key_and_validation_ns",
+      "median_ns": 58390.5,
+      "p95_ns": 74181.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "sparse_product_ns",
+      "median_ns": 63946.0,
+      "p95_ns": 70949.49999999999
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "reduction_ns",
+      "median_ns": 60845.5,
+      "p95_ns": 69881.54999999997
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "polynomial_total_ns",
+      "median_ns": 182763.0,
+      "p95_ns": 205972.99999999997
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 560.0,
+      "p95_ns": 750.5
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "message_encode_ns",
+      "median_ns": 7520.0,
+      "p95_ns": 11371.999999999998
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 271988.5,
+      "p95_ns": 286639.5999999998
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 1,
+      "phase": "encrypt_total_ns",
+      "median_ns": 466831.0,
+      "p95_ns": 494079.59999999974
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "total_ns",
+      "median_ns": 3450551.0,
+      "p95_ns": 3558114.5
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "key_and_validation_ns",
+      "median_ns": 432781.0,
+      "p95_ns": 446556.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "sparse_product_ns",
+      "median_ns": 428046.0,
+      "p95_ns": 536531.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "reduction_ns",
+      "median_ns": 396885.0,
+      "p95_ns": 406814.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "polynomial_total_ns",
+      "median_ns": 1258632.5,
+      "p95_ns": 1372086.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 680.0,
+      "p95_ns": 945.9999999999997
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "message_encode_ns",
+      "median_ns": 9950.0,
+      "p95_ns": 13167.449999999992
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 2133189.0,
+      "p95_ns": 2179791.5
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 8,
+      "phase": "encrypt_total_ns",
+      "median_ns": 3413090.0,
+      "p95_ns": 3520868.05
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "total_ns",
+      "median_ns": 13571612.5,
+      "p95_ns": 13822903.549999999
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "key_and_validation_ns",
+      "median_ns": 1720602.0,
+      "p95_ns": 1792403.95
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "sparse_product_ns",
+      "median_ns": 1699358.5,
+      "p95_ns": 1867166.55
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "reduction_ns",
+      "median_ns": 1549030.5,
+      "p95_ns": 1577281.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "polynomial_total_ns",
+      "median_ns": 4966054.0,
+      "p95_ns": 5183163.35
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 890.0,
+      "p95_ns": 1213.4999999999998
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "message_encode_ns",
+      "median_ns": 11845.5,
+      "p95_ns": 17019.5
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 8464944.0,
+      "p95_ns": 8554219.95
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 32,
+      "phase": "encrypt_total_ns",
+      "median_ns": 13426845.5,
+      "p95_ns": 13672210.549999999
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "total_ns",
+      "median_ns": 53838249.5,
+      "p95_ns": 54426403.199999996
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "key_and_validation_ns",
+      "median_ns": 6825763.0,
+      "p95_ns": 7062167.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "sparse_product_ns",
+      "median_ns": 6503980.0,
+      "p95_ns": 6755920.55
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "reduction_ns",
+      "median_ns": 6166929.0,
+      "p95_ns": 6429109.949999999
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "polynomial_total_ns",
+      "median_ns": 19571501.0,
+      "p95_ns": 20048489.65
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "key_prepare_call_ns",
+      "median_ns": 1080.0,
+      "p95_ns": 1781.0
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "message_encode_ns",
+      "median_ns": 19880.0,
+      "p95_ns": 44765.49999999999
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 33742632.5,
+      "p95_ns": 34038911.5
+    },
+    {
+      "backend": "sparse-cached-shifts",
+      "blocks": 128,
+      "phase": "encrypt_total_ns",
+      "median_ns": 53302747.0,
+      "p95_ns": 53865999.199999996
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "total_ns",
+      "median_ns": 1484765.0,
+      "p95_ns": 1568473.5499999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "key_normalization_ns",
+      "median_ns": 202728.0,
+      "p95_ns": 213359.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "prepare_ns",
+      "median_ns": 50731.0,
+      "p95_ns": 52659.94999999997
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "inference_with_io_ns",
+      "median_ns": 732324.0,
+      "p95_ns": 792186.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "reconstruct_ns",
+      "median_ns": 209468.0,
+      "p95_ns": 219178.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "reduction_ns",
+      "median_ns": 63156.0,
+      "p95_ns": 70961.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "pipeline_ns",
+      "median_ns": 991253.0,
+      "p95_ns": 1073670.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "output_validation_ns",
+      "median_ns": 46525.0,
+      "p95_ns": 53566.95
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "frame_sum_ns",
+      "median_ns": 79851.0,
+      "p95_ns": 86031.05
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "bit_reconstruction_ns",
+      "median_ns": 15120.0,
+      "p95_ns": 16070.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "frame_validation_ns",
+      "median_ns": 30695.0,
+      "p95_ns": 35602.99999999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "affine_encode_ns",
+      "median_ns": 16025.0,
+      "p95_ns": 16366.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "sdk_call_with_io_ns",
+      "median_ns": 555547.0,
+      "p95_ns": 613807.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "affine_decode_ns",
+      "median_ns": 127307.0,
+      "p95_ns": 134728.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "message_encode_ns",
+      "median_ns": 7135.0,
+      "p95_ns": 8120.549999999997
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 271758.0,
+      "p95_ns": 284625.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "encrypt_total_ns",
+      "median_ns": 1476840.5,
+      "p95_ns": 1559331.0499999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 1,
+      "phase": "unaccounted_ns",
+      "median_ns": 4520.0,
+      "p95_ns": 5806.499999999991
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "total_ns",
+      "median_ns": 9055829.5,
+      "p95_ns": 10894778.1
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "key_normalization_ns",
+      "median_ns": 587173.0,
+      "p95_ns": 605079.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "prepare_ns",
+      "median_ns": 158142.0,
+      "p95_ns": 176288.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "inference_with_io_ns",
+      "median_ns": 5209553.5,
+      "p95_ns": 6917812.1
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "reconstruct_ns",
+      "median_ns": 933852.0,
+      "p95_ns": 960299.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "reduction_ns",
+      "median_ns": 405540.0,
+      "p95_ns": 421118.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "pipeline_ns",
+      "median_ns": 6301777.5,
+      "p95_ns": 8054399.1
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "output_validation_ns",
+      "median_ns": 95661.0,
+      "p95_ns": 102278.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "frame_sum_ns",
+      "median_ns": 348300.0,
+      "p95_ns": 358159.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "bit_reconstruction_ns",
+      "median_ns": 76581.5,
+      "p95_ns": 87867.49999999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "frame_validation_ns",
+      "median_ns": 44781.0,
+      "p95_ns": 51625.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "affine_encode_ns",
+      "median_ns": 46905.5,
+      "p95_ns": 53493.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "sdk_call_with_io_ns",
+      "median_ns": 2298196.5,
+      "p95_ns": 2762839.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "affine_decode_ns",
+      "median_ns": 2720925.5,
+      "p95_ns": 4597287.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "message_encode_ns",
+      "median_ns": 9475.0,
+      "p95_ns": 12504.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 2136943.5,
+      "p95_ns": 2196660.0999999996
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "encrypt_total_ns",
+      "median_ns": 9014269.0,
+      "p95_ns": 10855482.6
+    },
+    {
+      "backend": "hailo",
+      "blocks": 8,
+      "phase": "unaccounted_ns",
+      "median_ns": 5065.0,
+      "p95_ns": 5589.999999999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "total_ns",
+      "median_ns": 25912888.0,
+      "p95_ns": 28448539.9
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "key_normalization_ns",
+      "median_ns": 1882914.5,
+      "p95_ns": 1916931.45
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "prepare_ns",
+      "median_ns": 502021.0,
+      "p95_ns": 527974.4
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "inference_with_io_ns",
+      "median_ns": 11287552.0,
+      "p95_ns": 13810076.999999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "reconstruct_ns",
+      "median_ns": 3541859.0,
+      "p95_ns": 3716187.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "reduction_ns",
+      "median_ns": 1586596.5,
+      "p95_ns": 1629280.0999999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "pipeline_ns",
+      "median_ns": 15350665.0,
+      "p95_ns": 18102662.099999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "output_validation_ns",
+      "median_ns": 257924.0,
+      "p95_ns": 330004.59999999974
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "frame_sum_ns",
+      "median_ns": 1433834.0,
+      "p95_ns": 1492970.45
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "bit_reconstruction_ns",
+      "median_ns": 259123.5,
+      "p95_ns": 287571.99999999994
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "frame_validation_ns",
+      "median_ns": 91361.0,
+      "p95_ns": 100084.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "affine_encode_ns",
+      "median_ns": 153452.5,
+      "p95_ns": 162363.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "sdk_call_with_io_ns",
+      "median_ns": 7606877.0,
+      "p95_ns": 9903099.049999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "affine_decode_ns",
+      "median_ns": 3414303.0,
+      "p95_ns": 3631870.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "message_encode_ns",
+      "median_ns": 11795.0,
+      "p95_ns": 13541.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 8454163.5,
+      "p95_ns": 8634951.45
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "encrypt_total_ns",
+      "median_ns": 25774476.0,
+      "p95_ns": 28306333.4
+    },
+    {
+      "backend": "hailo",
+      "blocks": 32,
+      "phase": "unaccounted_ns",
+      "median_ns": 6121.0,
+      "p95_ns": 7500.949999999987
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "total_ns",
+      "median_ns": 105811731.5,
+      "p95_ns": 115865228.85
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "key_normalization_ns",
+      "median_ns": 7031084.0,
+      "p95_ns": 7206400.85
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "prepare_ns",
+      "median_ns": 1871856.0,
+      "p95_ns": 1910081.0499999998
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "inference_with_io_ns",
+      "median_ns": 46198526.0,
+      "p95_ns": 56578807.84999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "reconstruct_ns",
+      "median_ns": 15097748.0,
+      "p95_ns": 15629376.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "reduction_ns",
+      "median_ns": 7258031.0,
+      "p95_ns": 7494490.1
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "pipeline_ns",
+      "median_ns": 63222491.5,
+      "p95_ns": 73440648.85
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "output_validation_ns",
+      "median_ns": 1140880.0,
+      "p95_ns": 1363961.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "frame_sum_ns",
+      "median_ns": 5578817.0,
+      "p95_ns": 5848588.55
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "bit_reconstruction_ns",
+      "median_ns": 1109140.5,
+      "p95_ns": 1224617.05
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "frame_validation_ns",
+      "median_ns": 280564.0,
+      "p95_ns": 290766.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "affine_encode_ns",
+      "median_ns": 643869.0,
+      "p95_ns": 2064649.0
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "sdk_call_with_io_ns",
+      "median_ns": 28920011.0,
+      "p95_ns": 38852415.39999999
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "affine_decode_ns",
+      "median_ns": 16296926.0,
+      "p95_ns": 16868979.65
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "message_encode_ns",
+      "median_ns": 20280.0,
+      "p95_ns": 26821.5
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "ciphertext_construction_ns",
+      "median_ns": 33782628.5,
+      "p95_ns": 34351192.65
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "encrypt_total_ns",
+      "median_ns": 105244503.5,
+      "p95_ns": 115303953.3
+    },
+    {
+      "backend": "hailo",
+      "blocks": 128,
+      "phase": "unaccounted_ns",
+      "median_ns": 1025834.0,
+      "p95_ns": 1253159.5499999998
+    }
+  ],
+  "metadata_by_round": [
+    {
+      "environment": {
+        "python": "3.12.3",
+        "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+        "packages": {
+          "numpy": "1.26.4",
+          "torch": "2.15.0",
+          "sympy": "1.14.0",
+          "onnx": "1.23.2",
+          "onnxruntime": "1.31.1",
+          "hailort": "4.23.0",
+          "netifaces": "0.11.0"
+        }
+      },
+      "runs": 20,
+      "warmup": 3,
+      "seed": 42,
+      "torch_threads": 6,
+      "hardware_internal_ns": null,
+      "compilation_ns": 83212821158,
+      "compare_variants": false,
+      "include_sympy_timing": false,
+      "host_processing": "optimized",
+      "include_sparse_cpu": true,
+      "cpu_key_preparation": {
+        "sparse-shift-sum": {
+          "kernel": "shift-sum",
+          "preparation_ns": 77571,
+          "prepared_bytes": 16824,
+          "max_product_abs": 2866389,
+          "accumulation": "INT64"
+        },
+        "sparse-cached-shifts": {
+          "kernel": "cached-shifts",
+          "preparation_ns": 3941721,
+          "prepared_bytes": 3936816,
+          "max_product_abs": 2866389,
+          "accumulation": "INT64"
+        }
+      },
+      "cpu_execution_note": "sparse kernels use NumPy INT64 reductions, no BLAS matmul; torch_threads applies to PyTorch",
+      "timing_hierarchy": {
+        "encrypt_total_ns": [
+          "message_encode_ns",
+          "key_normalization_ns",
+          "prepare_ns",
+          "inference_with_io_ns",
+          "reconstruct_ns",
+          "ciphertext_construction_ns",
+          "unaccounted_ns"
+        ],
+        "inference_with_io_ns": [
+          "frame_validation_ns",
+          "affine_encode_ns",
+          "sdk_call_with_io_ns",
+          "affine_decode_ns"
+        ],
+        "reconstruct_ns": [
+          "output_validation_ns",
+          "frame_sum_ns",
+          "bit_reconstruction_ns",
+          "reduction_ns"
+        ]
+      },
+      "payload_definition": "user message bytes; excludes encrypted length header and padding",
+      "batch_checks": {
+        "hailo:1": {
+          "frames": 8,
+          "input_bytes": 5632,
+          "output_bytes": 72960,
+          "payload_bytes": 79,
+          "exact": true
+        },
+        "hailo:8": {
+          "frames": 64,
+          "input_bytes": 45056,
+          "output_bytes": 583680,
+          "payload_bytes": 693,
+          "exact": true
+        },
+        "hailo:32": {
+          "frames": 256,
+          "input_bytes": 180224,
+          "output_bytes": 2334720,
+          "payload_bytes": 2796,
+          "exact": true
+        },
+        "hailo:128": {
+          "frames": 1024,
+          "input_bytes": 720896,
+          "output_bytes": 9338880,
+          "payload_bytes": 11208,
+          "exact": true
+        }
+      },
+      "boundary": "host wall clock; SDK call includes PCIe; no energy claim",
+      "timing_note": "inference_with_io_ns includes affine encode/decode; sdk_call_with_io_ns isolates the SDK call",
+      "variant_order": [
+        "active16-v1-cached"
+      ],
+      "key_sha256": "54e0c7e244eb1c93c4761b4b99a98e0e8123a13f17663754931650ca08042f03",
+      "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+      "compiler_version": "3.33.0",
+      "artifact_preparation_ns": 225979146,
+      "params": {
+        "N": 701,
+        "p": 3,
+        "q": 8192,
+        "df": 216,
+        "dg": 72,
+        "d": 55
+      },
+      "device": {
+        "architecture": "HAILO8L",
+        "firmware_version": "4.23.0",
+        "board_name": "Hailo-8",
+        "device_id": "0000:25:00.0",
+        "runtime_version": "4.23.0"
+      },
+      "validation": {
+        "stage": "hardware",
+        "cases": 2500,
+        "random_cases": 1000,
+        "seed": 42,
+        "exact": true,
+        "packing": "active16-v1",
+        "host_processing": "optimized"
+      },
+      "load_hef_ns": 136153778,
+      "variant_load_hef_ns": {
+        "hailo": 136153778
+      },
+      "variant_startup_ns": {
+        "hailo": {
+          "artifact_validation_ns": 51893498856,
+          "session_open_ns": 136157958,
+          "cold_start_ns": 52029656814
+        }
+      },
+      "artifact_validation_ns": 51893498856,
+      "session_open_ns": 136157958,
+      "cold_start_ns": 52029656814
+    },
+    {
+      "environment": {
+        "python": "3.12.3",
+        "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+        "packages": {
+          "numpy": "1.26.4",
+          "torch": "2.15.0",
+          "sympy": "1.14.0",
+          "onnx": "1.23.2",
+          "onnxruntime": "1.31.1",
+          "hailort": "4.23.0",
+          "netifaces": "0.11.0"
+        }
+      },
+      "runs": 20,
+      "warmup": 3,
+      "seed": 42,
+      "torch_threads": 6,
+      "hardware_internal_ns": null,
+      "compilation_ns": 83212821158,
+      "compare_variants": false,
+      "include_sympy_timing": false,
+      "host_processing": "optimized",
+      "include_sparse_cpu": true,
+      "cpu_key_preparation": {
+        "sparse-shift-sum": {
+          "kernel": "shift-sum",
+          "preparation_ns": 82971,
+          "prepared_bytes": 16824,
+          "max_product_abs": 2866389,
+          "accumulation": "INT64"
+        },
+        "sparse-cached-shifts": {
+          "kernel": "cached-shifts",
+          "preparation_ns": 3997605,
+          "prepared_bytes": 3936816,
+          "max_product_abs": 2866389,
+          "accumulation": "INT64"
+        }
+      },
+      "cpu_execution_note": "sparse kernels use NumPy INT64 reductions, no BLAS matmul; torch_threads applies to PyTorch",
+      "timing_hierarchy": {
+        "encrypt_total_ns": [
+          "message_encode_ns",
+          "key_normalization_ns",
+          "prepare_ns",
+          "inference_with_io_ns",
+          "reconstruct_ns",
+          "ciphertext_construction_ns",
+          "unaccounted_ns"
+        ],
+        "inference_with_io_ns": [
+          "frame_validation_ns",
+          "affine_encode_ns",
+          "sdk_call_with_io_ns",
+          "affine_decode_ns"
+        ],
+        "reconstruct_ns": [
+          "output_validation_ns",
+          "frame_sum_ns",
+          "bit_reconstruction_ns",
+          "reduction_ns"
+        ]
+      },
+      "payload_definition": "user message bytes; excludes encrypted length header and padding",
+      "batch_checks": {
+        "hailo:1": {
+          "frames": 8,
+          "input_bytes": 5632,
+          "output_bytes": 72960,
+          "payload_bytes": 79,
+          "exact": true
+        },
+        "hailo:8": {
+          "frames": 64,
+          "input_bytes": 45056,
+          "output_bytes": 583680,
+          "payload_bytes": 693,
+          "exact": true
+        },
+        "hailo:32": {
+          "frames": 256,
+          "input_bytes": 180224,
+          "output_bytes": 2334720,
+          "payload_bytes": 2796,
+          "exact": true
+        },
+        "hailo:128": {
+          "frames": 1024,
+          "input_bytes": 720896,
+          "output_bytes": 9338880,
+          "payload_bytes": 11208,
+          "exact": true
+        }
+      },
+      "boundary": "host wall clock; SDK call includes PCIe; no energy claim",
+      "timing_note": "inference_with_io_ns includes affine encode/decode; sdk_call_with_io_ns isolates the SDK call",
+      "variant_order": [
+        "active16-v1-cached"
+      ],
+      "key_sha256": "54e0c7e244eb1c93c4761b4b99a98e0e8123a13f17663754931650ca08042f03",
+      "hef_sha256": "a8db2b54e0eb7f519959f808f1c0312bc820567eb5bf95e7a40cc01617b6af63",
+      "compiler_version": "3.33.0",
+      "artifact_preparation_ns": 225979146,
+      "params": {
+        "N": 701,
+        "p": 3,
+        "q": 8192,
+        "df": 216,
+        "dg": 72,
+        "d": 55
+      },
+      "device": {
+        "architecture": "HAILO8L",
+        "firmware_version": "4.23.0",
+        "board_name": "Hailo-8",
+        "device_id": "0000:25:00.0",
+        "runtime_version": "4.23.0"
+      },
+      "validation": {
+        "stage": "hardware",
+        "cases": 2500,
+        "random_cases": 1000,
+        "seed": 42,
+        "exact": true,
+        "packing": "active16-v1",
+        "host_processing": "optimized"
+      },
+      "load_hef_ns": 132164444,
+      "variant_load_hef_ns": {
+        "hailo": 132164444
+      },
+      "variant_startup_ns": {
+        "hailo": {
+          "artifact_validation_ns": 52039002486,
+          "session_open_ns": 132168784,
+          "cold_start_ns": 52171171270
+        }
+      },
+      "artifact_validation_ns": 52039002486,
+      "session_open_ns": 132168784,
+      "cold_start_ns": 52171171270
+    }
+  ],
+  "limitation": "two warm-corpus desktop runs, one key/seed; not an optimal native CPU ceiling or an ARM result"
+}

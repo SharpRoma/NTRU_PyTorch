@@ -12,6 +12,7 @@ dependencies = ["sympy>=1.14", "torch>=2.7"]
 [project.optional-dependencies]
 test = ["pytest>=8", "ruff>=0.17"]
 plots = ["matplotlib>=3.10"]
+cpu-sparse = ["numpy>=1.26,<2"]
 hailo-export = ["numpy>=1.26", "onnx>=1.16", "onnxruntime>=1.18", "ml_dtypes>=0.5.4,<0.6"]
 hailo-runtime = ["numpy>=1.26,<2"]
 
@@ -23,6 +24,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]
 markers = ["slow: large experimental parameter sets", "hailo_hardware: requires exact compiled NTRU HEF and Hailo device"]
 
 [tool.ruff]
